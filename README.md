@@ -1,12 +1,16 @@
-# React + Vite
+# Goal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The goal of this project is is to create a translation app that takes text, audio and pictures as inputs and translates it to another language of your choice.
 
-Currently, two official plugins are available:
+# Splitting the work
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Lets put what we will work on here:
 
-## Expanding the ESLint configuration
+Abishek: Text translation, Audio Translation, Image Translation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Things that need to me done
+
+1. Translation website home page. (Im imagining something that looks similar to the chatGPT website with a textbox in the center where users can translate stuff without logging in)
+2. Login system: A way for users to login to the website so their conversations can be stored. (hint: OAuth or just follow a youtube tutorial)
+3. Storage system: A system to store user information including past translations so they can bring it back up. (I recommend mongoDB but use whatever)
+4. Text translation, Audio Translation, Image Translation, all the converting that goes with it ect.. (I (abishek) got this one)
