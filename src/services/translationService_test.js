@@ -48,7 +48,7 @@ export async function translateImage(file, targetLang) {
         content: [
           {
             type: "text",
-            text: `Translate all text in this image into ${targetLang}:`,
+            text: `You are a translator. Translate into ${targetLang}, preserving tone and meaning.`,
           },
           {
             type: "image_url",
@@ -78,7 +78,7 @@ export async function translateDocument(file, targetLang) {
         content: [
           {
             type: "text",
-            text: `Translate this document into ${targetLang}.`,
+            text: `You are a translator. Translate into ${targetLang}, preserving tone and meaning.`,
           },
           {
             type: "file",

@@ -17,8 +17,8 @@ export async function translateText(text, targetLang) {
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini-2024-07-18",
     messages: [
-      { role: "system", content: `You are a translator. Translate into ${targetLang}, preserving tone and meaning.` },
-      { role: "user", content: 'Translate this text ' + text },
+      { role: "system", content: `You are a translator. Translate into ${targetLang}, preserving tone and meaning. Respond with the translated text only.` },
+      { role: "user", content: 'Translate this text: ' + text },
     ],
     temperature: 0.3,
   });
@@ -49,7 +49,7 @@ export async function translateImage(file, targetLang) {
         content: [
           {
             type: "text",
-            text: `You are a translator. Translate into ${targetLang}, preserving tone and meaning.`,
+            text: `You are a translator. Translate into ${targetLang}, preserving tone and meaning. Respond with the translated text only.`,
           },
           {
             type: "image_url",
@@ -84,7 +84,7 @@ export async function translateDocument(file, targetLang) {
           },
           {
             type: "input_text",
-            text: `Translate this document into ${targetLang}. Preserve tone and structure.`,
+            text: `You are a translator. Translate this document into ${targetLang}. Preserve tone and structure. Respond with the translated text only.`,
           },
         ],
       },
