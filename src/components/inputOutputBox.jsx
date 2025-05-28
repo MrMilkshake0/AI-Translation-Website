@@ -1,6 +1,6 @@
 // src/components/inputOutputBox.jsx
 
-export const InputBox = ({ mode, text, setInput, file, setFile, getAcceptType }) => {
+export const InputBox = ({ mode, input, setInput, file, setFile, accept }) => {
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
     if (selected) setFile(selected);
@@ -12,14 +12,14 @@ export const InputBox = ({ mode, text, setInput, file, setFile, getAcceptType })
         <textarea
           className="w-full h-64 p-4 bg-white text-white border border-gray-700 rounded-2xl shadow-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
           placeholder="Enter text to translate..."
-          value={text}
+          value={input}
           onChange={(e) => setInput(e.target.value)}
         />
       ) : (
         <div className="h-64 flex flex-col justify-center items-center border border-gray-700 bg-[#2a2a2a] rounded-2xl p-6 shadow-md text-center text-white">
           <input
             type="file"
-            accept={getAcceptType()}
+            accept={accept}
             onChange={handleFileChange}
             className="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition"
           />

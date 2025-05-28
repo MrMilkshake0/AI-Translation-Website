@@ -1,11 +1,13 @@
 import React from "react";
 import TextTranslator from "./pages/TextTranslator";
+import { AuthProvider } from "./context/AuthContext";
+
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
+    <AuthProvider>
       <TextTranslator />
-    </div>
+    </AuthProvider>
   );
 }
 

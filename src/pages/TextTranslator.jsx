@@ -1,4 +1,3 @@
-// src/pages/TextTranslator.jsx
 import React, { useState } from "react";
 import {
   translateText,
@@ -6,12 +5,18 @@ import {
   translateDocument,
   translateAudio,
 } from "../services/translationService";
+
+import { auth } from "../services/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../services/firebase";
+
+import TranslationControls from "../components/TranslationControls";
 import { InputBox, OutputBox } from "../components/inputOutputBox";
-import TranslationControls from "../components/translationControls";
+import TranslationHistory from "../components/translationHistory"; // Sidebar
 
 const TextTranslator = () => {
   const [mode, setMode] = useState("text");
-  const [text, setInput] = useState("");
+  const [input, setInput] = useState("");
   const [file, setFile] = useState(null);
   const [language, setLanguage] = useState("French");
   const [customLang, setCustomLang] = useState("");
@@ -19,70 +24,82 @@ const TextTranslator = () => {
   const [loading, setLoading] = useState(false);
 
   const languageOptions = [
-    "French", "Spanish", "German", "Chinese", "Japanese", "Other"
+    "French",
+    "Spanish",
+    "German",
+    "Chinese",
+    "Japanese",
+    "Other",
   ];
 
   const getFinalLanguage = () =>
     language === "Other" ? customLang.trim() : language;
 
   const getAcceptType = () => {
-    switch (mode) {
-      case "image": return "image/*";
-      case "document": return ".pdf";
-      case "audio": return "audio/*";
-      default: return "*/*";
-    }
+    if (mode === "image") return "image/*";
+    if (mode === "document") return ".pdf,.doc,.docx";
+    if (mode === "audio") return "audio/*";
+    return "text/plain";
   };
 
   const handleTranslate = async () => {
     setLoading(true);
-    setResult("");
-
     try {
+      let translation = "";
       const targetLang = getFinalLanguage();
-      if (!targetLang) throw new Error("Please specify a target language.");
 
-      let output = "";
-      if (mode === "text") {
-        if (!text.trim()) throw new Error("Please enter some text.");
-        output = await translateText(text, targetLang);
-      } else {
-        if (!file) throw new Error("Please upload a file.");
-        if (mode === "image") output = await translateImage(file, targetLang);
-        else if (mode === "document") output = await translateDocument(file, targetLang);
-        else if (mode === "audio") output = await translateAudio(file, targetLang);
+      if (!targetLang) {
+        alert("Please select or enter a target language.");
+        setLoading(false);
+        return;
       }
 
-      setResult(output);
+      switch (mode) {
+        case "text":
+          translation = await translateText(input, targetLang);
+          break;
+        case "image":
+          translation = await translateImage(file, targetLang);
+          break;
+        case "document":
+          translation = await translateDocument(file, targetLang);
+          break;
+        case "audio":
+          translation = await translateAudio(file, targetLang);
+          break;
+        default:
+          throw new Error("Invalid translation mode");
+      }
+
+      setResult(translation);
+
+      // Save to Firestore if logged in
+      if (auth.currentUser) {
+        await addDoc(collection(db, "translations"), {
+          original: mode === "text" ? input : `[${mode} file]`,
+          translated: translation,
+          targetLang,
+          mode,
+          userId: auth.currentUser.uid,
+          timestamp: serverTimestamp(),
+        });
+      }
     } catch (err) {
-      setResult("Error: " + err.message);
-    } finally {
-      setLoading(false);
+      console.error(err);
+      alert("Translation failed. Check your input and try again.");
     }
+    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-[#1e1e1e] text-white px-6 py-10 flex flex-col items-center">
-      {/* Title */}
-      <h1 className="text-3xl font-semibold mb-10 text-white tracking-tight">
-        🌐 Multilingual Translator
-      </h1>
+    <div className="flex min-h-screen bg-[#121212] text-white">
+      {/* Sidebar */}
+      <TranslationHistory />
 
-      {/* Input + Output Container */}
-      <div className="flex flex-col md:flex-row gap-6 w-full max-w-6xl flex-1">
-        <InputBox
-          mode={mode}
-          text={text}
-          setInput={setInput}
-          file={file}
-          setFile={setFile}
-          getAcceptType={getAcceptType}
-        />
-        <OutputBox result={result} />
-      </div>
+      {/* Main Content */}
+      <main className="flex-1 p-6 overflow-y-auto max-w-6xl mx-auto w-full">
+        <h1 className="text-2xl font-bold mb-6">AI Translator</h1>
 
-      {/* Controls */}
-      <div className="mt-8 w-full max-w-5xl">
         <TranslationControls
           mode={mode}
           setMode={setMode}
@@ -97,10 +114,20 @@ const TextTranslator = () => {
           handleTranslate={handleTranslate}
           loading={loading}
         />
-      </div>
 
-      {/* Spacer for visual padding on large screens */}
-      <div className="flex-grow" />
+        <div className="mt-6 flex flex-col md:flex-row gap-6">
+          <InputBox
+            mode={mode}
+            input={input}
+            setInput={setInput}
+            file={file}
+            setFile={setFile}
+            accept={getAcceptType()}
+            loading={loading}
+          />
+          <OutputBox result={result} loading={loading} />
+        </div>
+      </main>
     </div>
   );
 };
