@@ -4,10 +4,10 @@ const TranslationControls = ({
   languageOptions, handleTranslate, loading
 }) => {
   return (
-    <div className="w-full max-w-5xl mx-auto bg-[#2a2a2a] rounded-xl px-4 py-4 shadow-md flex flex-row flex-wrap gap-4 items-end justify-between">
+    <div style={{width: "1000px"}} className="max-w-5xl mx-auto bg-[#2a2a2a] rounded-xl px-4 py-4 shadow-md flex flex-row flex-wrap gap-4 items-end justify-between">
 
       {/* Input Type Selector */}
-      <div className="flex flex-col w-[160px]">
+      <div style={{padding: "10px"}} className="flex flex-col w-[160px]">
         <label htmlFor="inputType" className="text-sm text-gray-300 mb-1">
           Input Type
         </label>
@@ -30,7 +30,7 @@ const TranslationControls = ({
       </div>
 
       {/* Language Selector */}
-      <div className="flex flex-col w-[180px]">
+      <div style={{padding: "10px"}} className="flex flex-col w-[180px]">
         <label htmlFor="language" className="text-sm text-gray-300 mb-1">
           Target Language
         </label>
@@ -49,17 +49,18 @@ const TranslationControls = ({
         </select>
         {language === "Other" && (
           <input
+            style={{color: "white"}}
+            className="mt-2 bg-[#1e1e1e] text-white p-2 rounded-md border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             type="text"
             placeholder="Custom language"
             value={customLang}
             onChange={(e) => setCustomLang(e.target.value)}
-            className="mt-2 bg-[#1e1e1e] text-white p-2 rounded-md border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         )}
       </div>
 
       {/* Translate Button */}
-      <div className="flex">
+      <div style={{padding: "10px"}} className="flex">
         <button
           onClick={handleTranslate}
           disabled={loading}

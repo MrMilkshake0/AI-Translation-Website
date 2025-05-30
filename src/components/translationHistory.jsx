@@ -23,7 +23,7 @@ const TranslationHistory = () => {
 
   return (
     <>
-      <aside className="w-72 min-h-screen bg-[#1f1f1f] text-white border-r border-gray-800 p-4 flex flex-col justify-between">
+      <aside style={{paddingRight: "10px"}} className="w-72 min-h-screen bg-[#1f1f1f] text-white border-r border-gray-800 p-4 flex flex-col justify-between">
         <div>
           {!user ? (
             <>

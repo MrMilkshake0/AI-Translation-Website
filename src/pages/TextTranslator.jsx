@@ -97,8 +97,21 @@ const TextTranslator = () => {
       <TranslationHistory />
 
       {/* Main Content */}
-      <main className="flex-1 p-6 overflow-y-auto max-w-6xl mx-auto w-full">
+      <main style={{padding: "10px"}} className="flex-1 p-6 overflow-y-auto max-w-6xl mx-auto w-full">
         <h1 className="text-2xl font-bold mb-6">AI Translator</h1>
+
+        <div className="mt-6 flex flex-col md:flex-row gap-6">
+          <OutputBox result={result} loading={loading} />
+          <InputBox
+            mode={mode}
+            input={input}
+            setInput={setInput}
+            file={file}
+            setFile={setFile}
+            accept={getAcceptType()}
+            loading={loading}
+          />
+        </div>
 
         <TranslationControls
           mode={mode}
@@ -115,18 +128,6 @@ const TextTranslator = () => {
           loading={loading}
         />
 
-        <div className="mt-6 flex flex-col md:flex-row gap-6">
-          <InputBox
-            mode={mode}
-            input={input}
-            setInput={setInput}
-            file={file}
-            setFile={setFile}
-            accept={getAcceptType()}
-            loading={loading}
-          />
-          <OutputBox result={result} loading={loading} />
-        </div>
       </main>
     </div>
   );

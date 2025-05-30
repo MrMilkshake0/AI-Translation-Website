@@ -7,16 +7,17 @@ export const InputBox = ({ mode, input, setInput, file, setFile, accept }) => {
   };
 
   return (
-    <div className="w-full md:w-1/2 p-2">
+    <div style={{paddingTop: "10px", paddingBottom: "1px"}} className="w-full md:w-1/2 p-2">
       {mode === "text" ? (
         <textarea
-          className="w-full h-64 p-4 bg-white text-white border border-gray-700 rounded-2xl shadow-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+          style={{height: "75px"}}
+          className="w-full p-4 bg-white text-white border border-gray-700 rounded-2xl shadow-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
           placeholder="Enter text to translate..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
       ) : (
-        <div className="h-64 flex flex-col justify-center items-center border border-gray-700 bg-[#2a2a2a] rounded-2xl p-6 shadow-md text-center text-white">
+        <div style={{padding: "10px"}} className="flex flex-col justify-center items-center border border-gray-700 bg-[#2a2a2a] rounded-2xl p-6 shadow-md text-center text-white">
           <input
             type="file"
             accept={accept}
@@ -36,10 +37,10 @@ export const InputBox = ({ mode, input, setInput, file, setFile, accept }) => {
 
 export const OutputBox = ({ result }) => {
   return (
-    <div className="w-full md:w-1/2 p-2">
-      <div className="bg-[#2a2a2a] border border-gray-700 p-6 rounded-2xl h-64 overflow-y-auto shadow-md text-white">
-        <h2 className="font-semibold text-lg mb-2">Output</h2>
-        <p className="whitespace-pre-wrap text-gray-200">
+    <div style={{height: "500px"}} className="w-full md:w-1/2 p-2">
+      <div className="bg-[#2a2a2a] border border-gray-700 p-6 rounded-2xl h-full overflow-y-auto shadow-md text-white">
+        <h2 style={{paddingLeft: "10px"}} className="font-semibold text-lg mb-2">Output</h2>
+        <p style={{paddingLeft: "10px"}} className="whitespace-pre-wrap text-gray-200">
           {result || "Translation will appear here..."}
         </p>
       </div>
