@@ -10,7 +10,7 @@ import { auth } from "../services/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../services/firebase";
 
-import TranslationControls from "../components/TranslationControls";
+import TranslationControls from "../components/translationControls";
 import { InputBox, OutputBox } from "../components/inputOutputBox";
 import TranslationHistory from "../components/translationHistory"; // Sidebar
 
