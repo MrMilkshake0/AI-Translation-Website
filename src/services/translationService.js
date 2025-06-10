@@ -94,16 +94,25 @@ export async function translateDocument(file, targetLang) {
   return response.output_text;
 }
 
-// Audio Translation (Whisper)
 export async function translateAudio(file, targetLang) {
   const openai = getOpenAIClient();
 
-  const response = await openai.audio.transcriptions.create({
-    file,
-    model: "whisper-1",
-    response_format: "text",
-    language: targetLang || undefined,
+  const audioBlob = new Blob([file], { type: file.type });
+  const audioFile = new File([audioBlob], file.name || "audio.webm", { type: file.type });
+
+  const transcription = await openai.audio.transcriptions.create({
+    file: audioFile,
+    model: "gpt-4o-transcribe",
+    response_format: "text", // This returns raw string!
   });
 
-  return response.text.trim();
+  // transcription is already a string
+  if (!transcription || typeof transcription !== "string") {
+    throw new Error("Transcription failed or returned no text.");
+  }
+
+  const originalText = transcription.trim();
+  const translatedText = await translateText(originalText, targetLang);
+
+  return { originalText, translatedText };
 }

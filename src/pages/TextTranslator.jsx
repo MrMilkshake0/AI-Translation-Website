@@ -12,7 +12,7 @@ import { db } from "../services/firebase";
 
 import TranslationControls from "../components/translationControls";
 import { InputBox, OutputBox } from "../components/inputOutputBox";
-import TranslationHistory from "../components/translationHistory"; // Sidebar
+import TranslationHistory from "../components/translationHistory";
 
 const TextTranslator = () => {
   const [mode, setMode] = useState("text");
@@ -24,6 +24,7 @@ const TextTranslator = () => {
   const [loading, setLoading] = useState(false);
 
   const languageOptions = [
+    "English",
     "French",
     "Spanish",
     "German",
@@ -65,11 +66,14 @@ const TextTranslator = () => {
           translation = await translateDocument(file, targetLang);
           break;
         case "audio":
-          translation = await translateAudio(file, targetLang);
+          const { originalText, translatedText } = await translateAudio(file, targetLang);
+          setInput(originalText); // Optional: display transcript in InputBox
+          translation = translatedText;
           break;
         default:
           throw new Error("Invalid translation mode");
       }
+
 
       setResult(translation);
 
@@ -85,9 +89,10 @@ const TextTranslator = () => {
         });
       }
     } catch (err) {
-      console.error(err);
-      alert("Translation failed. Check your input and try again.");
+      console.error("Translation Error:", err);
+      alert(`Translation failed: ${err.message || err}`);
     }
+
     setLoading(false);
   };
 

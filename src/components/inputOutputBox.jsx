@@ -7,17 +7,17 @@ export const InputBox = ({ mode, input, setInput, file, setFile, accept }) => {
   };
 
   return (
-    <div style={{paddingTop: "10px", paddingBottom: "1px"}} className="w-full md:w-1/2 p-2">
+    <div style={{ paddingTop: "10px", paddingBottom: "1px" }} className="w-full md:w-1/2 p-2">
       {mode === "text" ? (
         <textarea
-          style={{height: "75px"}}
+          style={{ height: "75px" }}
           className="w-full p-4 bg-white text-white border border-gray-700 rounded-2xl shadow-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
           placeholder="Enter text to translate..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
       ) : (
-        <div style={{padding: "10px"}} className="flex flex-col justify-center items-center border border-gray-700 bg-[#2a2a2a] rounded-2xl p-6 shadow-md text-center text-white">
+        <div style={{ padding: "10px" }} className="flex flex-col justify-center items-center border border-gray-700 bg-[#2a2a2a] rounded-2xl p-6 shadow-md text-center text-white">
           <input
             type="file"
             accept={accept}
@@ -29,11 +29,22 @@ export const InputBox = ({ mode, input, setInput, file, setFile, accept }) => {
               Selected: <span className="font-medium">{file.name}</span>
             </p>
           )}
+
+          {/* 👇 Solution 1 goes here: Transcribed text display */}
+          {mode === "audio" && input && (
+            <div className="mt-4 text-left w-full">
+              <h3 className="text-sm font-semibold text-white mb-1">Transcribed Text</h3>
+              <div className="bg-gray-800 text-gray-200 p-3 rounded-lg text-sm whitespace-pre-wrap">
+                {input}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
   );
 };
+
 
 export const OutputBox = ({ result }) => {
   return (
